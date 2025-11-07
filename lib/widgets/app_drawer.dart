@@ -1,24 +1,21 @@
-// lib/widgets/app_drawer.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 // Providers
 import '../providers/theme_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/auth_provider.dart';
-
 // Screens
 import '../screens/auth_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/saved_articles_screen.dart';
 import '../screens/history_screen.dart';
-import '../l10n/app_localizations.dart';
+import '../screens/admin/admin_dashboard_screen.dart';  // Import thêm
+import '../l10n/app_localizations.dart';  // Import l10n
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   void _showLoginRequiredDialog(BuildContext context) {
-    // Bây giờ 'l10n' sẽ được nhận diện
     final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
@@ -44,10 +41,8 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Bây giờ 'l10n' sẽ được nhận diện
     final l10n = AppLocalizations.of(context)!;
     final auth = context.watch<AuthProvider>();
-
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -64,9 +59,6 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
-
-
-
           Consumer<ThemeProvider>(
             builder: (context, themeProvider, child) {
               return SwitchListTile(
@@ -81,7 +73,6 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-
           ListTile(
             leading: const Icon(Icons.language),
             title: Text(l10n.switchLanguage),
@@ -90,7 +81,6 @@ class AppDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-
           ListTile(
             leading: const Icon(Icons.bookmark_border),
             title: Text(l10n.savedArticles),
@@ -103,7 +93,6 @@ class AppDrawer extends StatelessWidget {
               }
             },
           ),
-
           ListTile(
             leading: const Icon(Icons.history),
             title: Text(l10n.viewHistory),
@@ -116,9 +105,18 @@ class AppDrawer extends StatelessWidget {
               }
             },
           ),
-
+          // Item Admin Dashboard (chỉ hiển thị nếu là admin)
+          if (auth.isAuth && auth.role == 'admin') ...[
+            ListTile(
+              leading: const Icon(Icons.admin_panel_settings),
+              title: Text(l10n.adminDashboard ?? 'Admin Dashboard'),  // Fallback
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed(AdminDashboardScreen.routeName);
+              },
+            ),
+          ],
           const Divider(),
-
           ListTile(
             leading: Icon(auth.isAuth ? Icons.logout : Icons.login),
             title: Text(auth.isAuth ? l10n.logout : l10n.login),
@@ -132,7 +130,6 @@ class AppDrawer extends StatelessWidget {
               }
             },
           ),
-
           if (auth.isAuth && auth.email != null)
             ListTile(
               leading: Icon(

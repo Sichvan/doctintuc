@@ -133,4 +133,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get home => 'Home';
+
+  @override
+  String get adminDashboard => 'Admin Dashboard';
+
+  @override
+  String get manageArticles => 'Manage Articles';
+
+  @override
+  String get manageUsers => 'Manage Users';
+
+  @override
+  String get manageComments => 'Manage Comments';
+
+  @override
+  String get manageApp => 'Manage App';
+
+  @override
+  String get noAdminAccess => 'You do not have admin access.';
 }

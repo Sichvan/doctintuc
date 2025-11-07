@@ -343,6 +343,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Trang chủ'**
   String get home;
+
+  /// No description provided for @adminDashboard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng Điều Khiển Admin'**
+  String get adminDashboard;
+
+  /// No description provided for @manageArticles.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý Bài viết'**
+  String get manageArticles;
+
+  /// No description provided for @manageUsers.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý Tài khoản'**
+  String get manageUsers;
+
+  /// No description provided for @manageComments.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý Bình luận'**
+  String get manageComments;
+
+  /// No description provided for @manageApp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý Ứng dụng'**
+  String get manageApp;
+
+  /// No description provided for @noAdminAccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không có quyền truy cập admin.'**
+  String get noAdminAccess;
 }
 
 class _AppLocalizationsDelegate

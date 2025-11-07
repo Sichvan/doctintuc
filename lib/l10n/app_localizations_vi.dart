@@ -133,4 +133,22 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get home => 'Trang chủ';
+
+  @override
+  String get adminDashboard => 'Bảng Điều Khiển Admin';
+
+  @override
+  String get manageArticles => 'Quản lý Bài viết';
+
+  @override
+  String get manageUsers => 'Quản lý Tài khoản';
+
+  @override
+  String get manageComments => 'Quản lý Bình luận';
+
+  @override
+  String get manageApp => 'Quản lý Ứng dụng';
+
+  @override
+  String get noAdminAccess => 'Bạn không có quyền truy cập admin.';
 }

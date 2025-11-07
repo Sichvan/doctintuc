@@ -13,13 +13,14 @@ import 'screens/splash_screen.dart';
 import 'screens/article_detail_admin_content_screen.dart';
 import 'screens/saved_articles_screen.dart';
 import 'screens/history_screen.dart';
-import 'screens/admin/admin_dashboard_screen.dart';
-
+import 'screens/admin/admin_dashboard_screen.dart';  // Import thêm
+import 'screens/admin/admin_manage_users_screen.dart';  // Import thêm
+import 'screens/admin/admin_manage_articles_screen.dart';  // Import thêm
+import 'screens/admin/admin_edit_article_screen.dart';  // Import thêm
 // L10n
 import 'l10n/app_localizations.dart';
-
 // Theme
-import 'theme/dark_light.dart'; // Import theme của bạn
+import 'theme/dark_light.dart';  // Giả sử file này tồn tại
 
 void main() {
   runApp(const MyApp());
@@ -36,25 +37,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
-
-        // --- TRẢ LẠI ADMIN_PROVIDER VỀ DẠNG ĐƠN GIẢN ---
-        // Bằng cách này, nó sẽ không bị lỗi và các trang admin
-        // của bạn vẫn hoạt động như cũ (vì chúng tự lấy token
-        // từ AuthProvider và truyền vào hàm)
         ChangeNotifierProvider(create: (_) => AdminProvider()),
-
         // --- CÁC PROVIDER PHỤ THUỘC (PROXY) ---
-
-        // 1. NewsProvider (phụ thuộc vào LanguageProvider)
         ChangeNotifierProxyProvider<LanguageProvider, NewsProvider>(
           create: (_) => NewsProvider(),
           update: (_, lang, news) => news!
             ..fetchNewsByCategory(
-                'top', lang.currentLocale.languageCode),
+              'top',
+              lang.currentLocale.languageCode,
+            ),
         ),
-
-        // 2. UserDataProvider (MỚI - phụ thuộc vào AuthProvider)
-        // Provider này sẽ tự động nhận token
         ChangeNotifierProxyProvider<AuthProvider, UserDataProvider>(
           create: (_) => UserDataProvider(),
           update: (_, auth, userData) => userData!..update(auth.token),
@@ -64,13 +56,9 @@ class MyApp extends StatelessWidget {
         builder: (context, themeProv, _) {
           return MaterialApp(
             title: 'News App',
-
-            // Theme
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: themeProv.themeMode,
-
-            // L10n
             locale: context.watch<LanguageProvider>().currentLocale,
             localizationsDelegates: const [
               AppLocalizations.delegate,
@@ -79,47 +67,42 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: const [
-              Locale('en', ''), // English
-              Locale('vi', ''), // Vietnamese
+              Locale('en', ''),
+              Locale('vi', ''),
             ],
-
-            // Logic Home/Auth
+            // SỬA LỖI RETURN TYPE: Đảm bảo home return Widget đúng
             home: Consumer<AuthProvider>(
-              builder: (ctx, auth, _) => auth.isAuth
-                  ? const HomeScreen()
-                  : FutureBuilder(
-                future: auth.tryAutoLogin(),
-                builder: (ctx, authResultSnapshot) {
-                  if (authResultSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const SplashScreen();
-                  }
-                  if (auth.isAuth) {
-                    ctx
-                        .read<UserDataProvider>()
-                        .fetchInitialSavedArticles();
-                  }
-                  return auth.isAuth
-                      ? const HomeScreen()
-                      : const AuthScreen();
-                },
-              ),
+              builder: (ctx, auth, _) {
+                if (!auth.isAuth) {
+                  return FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (ctx, authResultSnapshot) {
+                      if (authResultSnapshot.connectionState == ConnectionState.waiting) {
+                        return const SplashScreen();
+                      }
+                      if (auth.isAuth) {
+                        ctx.read<UserDataProvider>().fetchInitialSavedArticles();
+                      }
+                      return auth.isAuth ? const HomeScreen() : const AuthScreen();
+                    },
+                  );
+                }
+                // Nếu auth.isAuth, return HomeScreen (không phải AdminDashboard trực tiếp)
+                return const HomeScreen();
+              },
             ),
-
-            // Routes
+            // Routes: Đảm bảo tất cả return Widget
             routes: {
               AuthScreen.routeName: (ctx) => const AuthScreen(),
               HomeScreen.routeName: (ctx) => const HomeScreen(),
-              ArticleDetailAdminContentScreen.routeName: (ctx) =>
-              const ArticleDetailAdminContentScreen(),
-              SavedArticlesScreen.routeName: (ctx) =>
-              const SavedArticlesScreen(),
+              ArticleDetailAdminContentScreen.routeName: (ctx) => const ArticleDetailAdminContentScreen(),
+              SavedArticlesScreen.routeName: (ctx) => const SavedArticlesScreen(),
               HistoryScreen.routeName: (ctx) => const HistoryScreen(),
-
-              // TÔI GIẢ SỬ BẠN CÓ MỘT ROUTE ADMIN NHƯ THẾ NÀY:
-              // 'admin-home': (ctx) => AdminHomeScreen(),
-              // 'admin-users': (ctx) => AdminUsersScreen(),
-              // ... (Hãy đảm bảo route admin của bạn vẫn được đăng ký)
+              // Admin routes
+              AdminDashboardScreen.routeName: (ctx) => const AdminDashboardScreen(),  // const để fix return type
+              AdminManageUsersScreen.routeName: (ctx) => const AdminManageUsersScreen(),
+              AdminManageArticlesScreen.routeName: (ctx) => const AdminManageArticlesScreen(),
+              AdminEditArticleScreen.routeName: (ctx) => const AdminEditArticleScreen(),
             },
           );
         },

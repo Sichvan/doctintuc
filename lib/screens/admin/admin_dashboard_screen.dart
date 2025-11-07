@@ -2,24 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/theme_provider.dart';
+import '../../l10n/app_localizations.dart';  // Import l10n
+import '../home_screen.dart';
 import 'admin_manage_users_screen.dart';
 import 'admin_manage_articles_screen.dart';
 
-class AdminDashboardScreen extends StatelessWidget {
+class AdminDashboardScreen extends StatelessWidget {  // Đã extends StatelessWidget đúng
   static const routeName = '/admin-dashboard';
-  const AdminDashboardScreen({super.key});
+
+  const AdminDashboardScreen({super.key});  // Sửa constructor với super.key
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  // build method đúng
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final l10n = AppLocalizations.of(context)!;  // Sử dụng l10n
 
-    return Scaffold(
+    return Scaffold(  // Scaffold từ material.dart
       appBar: AppBar(
-        title: const Text('Trang Quản Trị (Admin)'),
+        title: Text(l10n.adminDashboard ?? 'Admin Dashboard'),  // Fallback nếu key chưa generate
         actions: [
           IconButton(
-            icon: Icon(
-              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+            icon: Icon(  // Icon từ material.dart
+              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,  // Icons từ material.dart
             ),
             onPressed: () {
               themeProvider.toggleTheme(!themeProvider.isDarkMode);
@@ -29,6 +33,8 @@ class AdminDashboardScreen extends StatelessWidget {
             icon: const Icon(Icons.logout),
             onPressed: () {
               context.read<AuthProvider>().logout();
+              // Sau logout, quay về Home
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);  // Import HomeScreen nếu cần
             },
           ),
         ],
@@ -43,7 +49,7 @@ class AdminDashboardScreen extends StatelessWidget {
             _buildDashboardItem(
               context: context,
               icon: Icons.comment_bank_outlined,
-              title: 'Quản lý Bình luận',
+              title: l10n.manageComments ?? 'Manage Comments',
               onTap: () {
                 // TODO: Điều hướng đến trang quản lý bình luận
                 // Navigator.of(context).pushNamed('/admin-comments');
@@ -52,25 +58,23 @@ class AdminDashboardScreen extends StatelessWidget {
             _buildDashboardItem(
               context: context,
               icon: Icons.article_outlined,
-              title: 'Quản lý Bài viết',
+              title: l10n.manageArticles ?? 'Manage Articles',
               onTap: () {
-                // TODO: Điều hướng đến trang quản lý bài viết
                 Navigator.of(context).pushNamed(AdminManageArticlesScreen.routeName);
               },
             ),
             _buildDashboardItem(
               context: context,
               icon: Icons.people_outline,
-              title: 'Quản lý Tài khoản',
+              title: l10n.manageUsers ?? 'Manage Users',
               onTap: () {
-                // TODO: Điều hướng đến trang quản lý tài khoản
                 Navigator.of(context).pushNamed(AdminManageUsersScreen.routeName);
               },
             ),
             _buildDashboardItem(
               context: context,
               icon: Icons.settings_applications_outlined,
-              title: 'Quản lý Ứng dụng',
+              title: l10n.manageApp ?? 'Manage App',
               onTap: () {
                 // TODO: Điều hướng đến trang cài đặt chung
                 // Navigator.of(context).pushNamed('/admin-settings');

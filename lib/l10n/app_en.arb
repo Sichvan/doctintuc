@@ -48,5 +48,11 @@
     "switchToLogin": "Already have an account? Login",
     "logout": "Logout",
     "emailMustBeGmail": "Email must end with @gmail.com.",
-    "home": "Home"
+    "home": "Home",
+    "adminDashboard": "Admin Dashboard",
+    "manageArticles": "Manage Articles",
+    "manageUsers": "Manage Users",
+    "manageComments": "Manage Comments",
+    "manageApp": "Manage App",
+    "noAdminAccess": "You do not have admin access."
 }
