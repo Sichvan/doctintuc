@@ -337,6 +337,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Email phải có đuôi @gmail.com.'**
   String get emailMustBeGmail;
+
+  /// No description provided for @home.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang chủ'**
+  String get home;
 }
 
 class _AppLocalizationsDelegate

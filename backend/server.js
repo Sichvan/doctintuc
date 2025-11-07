@@ -6,6 +6,7 @@ const newsRoutes = require('./routes/news');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const articleRoutes = require('./routes/articles');
+const userRoutes = require('./routes/user');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +23,7 @@ app.use('/api/news', newsRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/articles', articleRoutes);
+app.use('/api/user', userRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'Server OK', message: 'Backend News App running!' });

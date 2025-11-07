@@ -130,4 +130,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get emailMustBeGmail => 'Email phải có đuôi @gmail.com.';
+
+  @override
+  String get home => 'Trang chủ';
 }

@@ -47,5 +47,6 @@
     "switchToRegister": "No account? Register now",
     "switchToLogin": "Already have an account? Login",
     "logout": "Logout",
-    "emailMustBeGmail": "Email must end with @gmail.com."
+    "emailMustBeGmail": "Email must end with @gmail.com.",
+    "home": "Home"
 }

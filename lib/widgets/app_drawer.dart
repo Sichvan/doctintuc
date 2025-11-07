@@ -1,15 +1,24 @@
+// lib/widgets/app_drawer.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Providers
 import '../providers/theme_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/auth_provider.dart';
+
+// Screens
 import '../screens/auth_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/saved_articles_screen.dart';
+import '../screens/history_screen.dart';
 import '../l10n/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   void _showLoginRequiredDialog(BuildContext context) {
+    // Bây giờ 'l10n' sẽ được nhận diện
     final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
@@ -35,6 +44,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Bây giờ 'l10n' sẽ được nhận diện
     final l10n = AppLocalizations.of(context)!;
     final auth = context.watch<AuthProvider>();
 
@@ -54,6 +64,8 @@ class AppDrawer extends StatelessWidget {
               ),
             ),
           ),
+
+
 
           Consumer<ThemeProvider>(
             builder: (context, themeProvider, child) {
@@ -84,7 +96,8 @@ class AppDrawer extends StatelessWidget {
             title: Text(l10n.savedArticles),
             onTap: () {
               if (auth.isAuth) {
-                // TODO: Điều hướng tới màn hình bài báo đã lưu
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed(SavedArticlesScreen.routeName);
               } else {
                 _showLoginRequiredDialog(context);
               }
@@ -96,7 +109,8 @@ class AppDrawer extends StatelessWidget {
             title: Text(l10n.viewHistory),
             onTap: () {
               if (auth.isAuth) {
-                // TODO: Điều hướng tới màn hình lịch sử xem
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed(HistoryScreen.routeName);
               } else {
                 _showLoginRequiredDialog(context);
               }
@@ -107,11 +121,12 @@ class AppDrawer extends StatelessWidget {
 
           ListTile(
             leading: Icon(auth.isAuth ? Icons.logout : Icons.login),
-            title: Text(auth.isAuth ? l10n.logout : l10n.login), // Dùng l10n
+            title: Text(auth.isAuth ? l10n.logout : l10n.login),
             onTap: () {
               Navigator.pop(context);
               if (auth.isAuth) {
                 context.read<AuthProvider>().logout();
+                Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
               } else {
                 Navigator.of(context).pushNamed(AuthScreen.routeName);
               }

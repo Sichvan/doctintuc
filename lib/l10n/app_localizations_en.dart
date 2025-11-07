@@ -130,4 +130,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailMustBeGmail => 'Email must end with @gmail.com.';
+
+  @override
+  String get home => 'Home';
 }

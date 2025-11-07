@@ -47,5 +47,6 @@
         "switchToRegister": "Chưa có tài khoản? Đăng ký ngay",
         "switchToLogin": "Đã có tài khoản? Đăng nhập",
         "logout": "Đăng xuất",
-        "emailMustBeGmail": "Email phải có đuôi @gmail.com."
+        "emailMustBeGmail": "Email phải có đuôi @gmail.com.",
+        "home": "Trang chủ"
 }

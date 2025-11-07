@@ -12,7 +12,7 @@ class AdminArticle {
   final String language;
   final String category;
   final String sourceName;
-  final String authorEmail; // Sẽ hiển thị 'ID: ...' hoặc 'email@...'
+  final String authorEmail;
   final DateTime createdAt;
 
   AdminArticle({
@@ -28,19 +28,14 @@ class AdminArticle {
   });
 
   factory AdminArticle.fromJson(Map<String, dynamic> json) {
-    // --- SỬA LỖI ---
-    // Xử lý trường 'author' linh hoạt
     String email = 'Không rõ';
     if (json["author"] != null) {
       if (json["author"] is Map<String, dynamic>) {
-        // Trường hợp author được populate (khi fetch)
         email = json["author"]["email"] ?? 'Không rõ';
       } else if (json["author"] is String) {
-        // Trường hợp author chỉ là ID (khi add/update)
         email = 'Admin (ID: ${json["author"]})';
       }
     }
-    // --- KẾT THÚC SỬA ---
 
     return AdminArticle(
       id: json["_id"],
@@ -49,13 +44,12 @@ class AdminArticle {
       imageUrl: json["imageUrl"],
       language: json["language"],
       category: json["category"],
-      sourceName: json["sourceName"] ?? 'Tin tức Admin', // Thêm default
-      authorEmail: email, // Dùng biến email đã xử lý
+      sourceName: json["sourceName"] ?? 'Tin tức Admin',
+      authorEmail: email,
       createdAt: DateTime.parse(json["createdAt"]),
     );
   }
 
-  // Map này chỉ dùng để gửi đi, không cần 'id' hay 'author'
   Map<String, dynamic> toSendJson() => {
     "title": title,
     "content": content,

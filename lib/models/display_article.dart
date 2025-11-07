@@ -1,18 +1,14 @@
 import '../models/news.dart';
 import '../models/admin_article.dart';
 
-/// Model thống nhất để hiển thị tin tức trên HomeScreen.
-/// Gộp dữ liệu từ 2 nguồn: [News] (từ API) và [AdminArticle] (từ DB).
 class DisplayArticle {
   final String id;
   final String title;
   final String? imageUrl;
   final String sourceName;
   final DateTime pubDate;
-  final bool isFromAdmin; // <-- Lỗi của bạn là do thiếu trường này
-
-  // Dùng cho điều hướng thông minh
-  final String articleUrl; // <-- Lỗi của bạn là do đây là String (không phải String?)
+  final bool isFromAdmin;
+  final String articleUrl;
   final String? adminContent;
 
   DisplayArticle({
@@ -26,18 +22,16 @@ class DisplayArticle {
     this.adminContent,
   });
 
-  // Constructor để chuyển đổi từ [News] (API)
   DisplayArticle.fromNews(News news)
-      : id = news.link, // Dùng link làm ID cho tin API
+      : id = news.link,
         title = news.title,
         imageUrl = news.imageUrl,
         sourceName = news.sourceName,
         pubDate = news.pubDate ?? DateTime.now(),
         isFromAdmin = false,
-        articleUrl = news.link, // link là String (không null)
+        articleUrl = news.link,
         adminContent = null;
 
-  // Constructor để chuyển đổi từ [AdminArticle] (DB)
   DisplayArticle.fromAdminArticle(AdminArticle article)
       : id = article.id,
         title = article.title,
@@ -45,7 +39,34 @@ class DisplayArticle {
         sourceName = article.sourceName,
         pubDate = article.createdAt,
         isFromAdmin = true,
-        articleUrl = '', // Tin Admin không có URL ngoài, gán giá trị rỗng (String không null)
+        articleUrl = '',
         adminContent = article.content;
+
+  factory DisplayArticle.fromSavedJson(Map<String, dynamic> json) {
+    return DisplayArticle(
+      id: json["articleId"], // Lưu ý: id lấy từ articleId
+      title: json["title"],
+      imageUrl: json["imageUrl"],
+      sourceName: json["sourceName"],
+      // pubDate có thể null từ API, nên parse cẩn thận
+      pubDate: json["pubDate"] == null ? DateTime.now() : DateTime.parse(json["pubDate"]),
+      isFromAdmin: json["isFromAdmin"],
+      articleUrl: json["articleUrl"] ?? '',
+      adminContent: json["adminContent"],
+    );
+  }
+
+  // THÊM hàm MỚI:
+  // Dùng để gửi dữ liệu lên API khi lưu hoặc thêm lịch sử
+  Map<String, dynamic> toSaveJson() => {
+    "articleId": id,
+    "title": title,
+    "imageUrl": imageUrl,
+    "sourceName": sourceName,
+    "pubDate": pubDate.toIso8601String(),
+    "isFromAdmin": isFromAdmin,
+    "articleUrl": articleUrl,
+    "adminContent": adminContent,
+  };
 }
 

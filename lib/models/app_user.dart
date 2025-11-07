@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-// Dùng tên AppUser để tránh trùng lặp với User của Firebase (nếu có)
-// hoặc User của provider (nếu có)
 List<AppUser> appUserFromJson(String str) =>
     List<AppUser>.from(json.decode(str).map((x) => AppUser.fromJson(x)));
 
@@ -19,7 +17,7 @@ class AppUser {
   });
 
   factory AppUser.fromJson(Map<String, dynamic> json) => AppUser(
-    id: json["_id"], // MongoDB dùng _id
+    id: json["_id"],
     email: json["email"],
     role: json["role"],
     createdAt: DateTime.parse(json["createdAt"]),

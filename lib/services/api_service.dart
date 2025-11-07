@@ -129,5 +129,73 @@ class ApiService {
     );
     return _handleResponse(response);
   }
+
+  Future<List<dynamic>> getSavedArticles(String token) async {
+    final url = '$_baseUrl/user/saved';
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+    );
+    return _handleResponse(response) as List<dynamic>;
+  }
+
+  // Lấy danh sách lịch sử
+  Future<List<dynamic>> getHistory(String token) async {
+    final url = '$_baseUrl/user/history';
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+    );
+    return _handleResponse(response) as List<dynamic>;
+  }
+
+  // Lưu 1 bài viết
+  Future<dynamic> saveArticle(String token, Map<String, dynamic> articleData) async {
+    final url = '$_baseUrl/user/save';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+      body: json.encode(articleData),
+    );
+    return _handleResponse(response);
+  }
+
+  // Bỏ lưu 1 bài viết
+  Future<dynamic> unsaveArticle(String token, String articleId) async {
+    final url = '$_baseUrl/user/unsave';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+      body: json.encode({'articleId': articleId}),
+    );
+    return _handleResponse(response);
+  }
+
+  // Thêm vào lịch sử
+  Future<dynamic> addHistory(String token, Map<String, dynamic> articleData) async {
+    final url = '$_baseUrl/user/history';
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+      body: json.encode(articleData),
+    );
+    return _handleResponse(response);
+  }
+
 }
 

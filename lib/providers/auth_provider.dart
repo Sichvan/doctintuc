@@ -71,7 +71,7 @@ class AuthProvider extends ChangeNotifier {
     _token = prefs.getString('token');
     _role = prefs.getString('role');
     _userId = prefs.getString('userId');
-    _email = prefs.getString('email'); // <-- 5. TẢI EMAIL TỪ PREFS
+    _email = prefs.getString('email');
     notifyListeners();
     return true;
   }
@@ -80,10 +80,10 @@ class AuthProvider extends ChangeNotifier {
     _token = null;
     _role = null;
     _userId = null;
-    _email = null; // <-- 6. XÓA EMAIL KHI LOGOUT
+    _email = null;
     notifyListeners();
 
     final prefs = await SharedPreferences.getInstance();
-    prefs.clear(); // Xóa tất cả dữ liệu đã lưu
+    prefs.clear();
   }
 }
