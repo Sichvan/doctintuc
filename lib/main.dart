@@ -74,28 +74,39 @@ class MyApp extends StatelessWidget {
               Locale('en', ''),
               Locale('vi', ''),
             ],
+            // === SỬA ĐỔI LOGIC TẠI ĐÂY ===
             home: Consumer<AuthProvider>(
               builder: (ctx, auth, _) {
-                if (!auth.isAuth) {
-                  return FutureBuilder(
-                    future: auth.tryAutoLogin(),
-                    builder: (ctx, authResultSnapshot) {
-                      if (authResultSnapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const SplashScreen();
-                      }
-                      if (auth.isAuth) {
-                        ctx.read<UserDataProvider>().fetchInitialSavedArticles();
-                      }
-                      return auth.isAuth
-                          ? const HomeScreen()
-                          : const AuthScreen();
-                    },
-                  );
+                // Nếu đã đăng nhập, vào thẳng HomeScreen
+                if (auth.isAuth) {
+                  return const HomeScreen();
                 }
-                return const HomeScreen();
+
+                // Nếu chưa, vẫn chạy tryAutoLogin
+                return FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) {
+                    // 1. Trong khi chờ, hiển thị Splash Screen
+                    if (authResultSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const SplashScreen();
+                    }
+
+                    // 2. Sau khi chờ, kiểm tra xem autoLogin có thành công không
+                    if (auth.isAuth) {
+                      // Nếu thành công, tải dữ liệu user
+                      ctx.read<UserDataProvider>().fetchInitialSavedArticles();
+                    }
+
+                    // 3. SỬA ĐỔI: LUÔN LUÔN đi đến HomeScreen
+                    //    (thay vì đi đến AuthScreen nếu auth.isAuth là false)
+                    return const HomeScreen();
+                  },
+                );
               },
             ),
+            // === KẾT THÚC SỬA ĐỔI ===
+
             // Routes: Đảm bảo tất cả return Widget
             routes: {
               AuthScreen.routeName: (ctx) => const AuthScreen(),
