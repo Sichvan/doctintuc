@@ -1,3 +1,4 @@
+// lib/models/display_article.dart
 import '../models/news.dart';
 import '../models/admin_article.dart';
 
@@ -10,6 +11,7 @@ class DisplayArticle {
   final bool isFromAdmin;
   final String articleUrl;
   final String? adminContent;
+  final String category; // <-- THÊM DÒNG NÀY
 
   DisplayArticle({
     required this.id,
@@ -20,9 +22,11 @@ class DisplayArticle {
     required this.isFromAdmin,
     required this.articleUrl,
     this.adminContent,
+    required this.category, // <-- THÊM DÒNG NÀY
   });
 
-  DisplayArticle.fromNews(News news)
+  // SỬA: Thêm tham số category
+  DisplayArticle.fromNews(News news, String category)
       : id = news.link,
         title = news.title,
         imageUrl = news.imageUrl,
@@ -30,7 +34,8 @@ class DisplayArticle {
         pubDate = news.pubDate ?? DateTime.now(),
         isFromAdmin = false,
         articleUrl = news.link,
-        adminContent = null;
+        adminContent = null,
+        category = category; // <-- THÊM DÒNG NÀY
 
   DisplayArticle.fromAdminArticle(AdminArticle article)
       : id = article.id,
@@ -40,24 +45,23 @@ class DisplayArticle {
         pubDate = article.createdAt,
         isFromAdmin = true,
         articleUrl = '',
-        adminContent = article.content;
+        adminContent = article.content,
+        category = article.category; // <-- THÊM DÒNG NÀY
 
   factory DisplayArticle.fromSavedJson(Map<String, dynamic> json) {
     return DisplayArticle(
-      id: json["articleId"], // Lưu ý: id lấy từ articleId
+      id: json["articleId"],
       title: json["title"],
       imageUrl: json["imageUrl"],
       sourceName: json["sourceName"],
-      // pubDate có thể null từ API, nên parse cẩn thận
       pubDate: json["pubDate"] == null ? DateTime.now() : DateTime.parse(json["pubDate"]),
       isFromAdmin: json["isFromAdmin"],
       articleUrl: json["articleUrl"] ?? '',
       adminContent: json["adminContent"],
+      category: json["category"] ?? 'other', // <-- THÊM DÒNG NÀY
     );
   }
 
-  // THÊM hàm MỚI:
-  // Dùng để gửi dữ liệu lên API khi lưu hoặc thêm lịch sử
   Map<String, dynamic> toSaveJson() => {
     "articleId": id,
     "title": title,
@@ -67,6 +71,6 @@ class DisplayArticle {
     "isFromAdmin": isFromAdmin,
     "articleUrl": articleUrl,
     "adminContent": adminContent,
+    "category": category, // <-- THÊM DÒNG NÀY
   };
 }
-

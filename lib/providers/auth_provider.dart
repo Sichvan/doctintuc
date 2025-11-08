@@ -9,7 +9,7 @@ class AuthProvider extends ChangeNotifier {
   String? _userId;
   String? _email;
 
-  final String _baseUrl = 'http://10.200.151.26:5000/api/auth';
+  final String _baseUrl = 'http://192.168.1.25:5000/api/auth';
 
   bool get isAuth => _token != null;
   String? get token => _token;

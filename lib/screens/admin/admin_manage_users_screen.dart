@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/admin_provider.dart';
 import '../../providers/auth_provider.dart';
+import 'admin_user_detail_stats_screen.dart'; // <-- THÊM IMPORT MỚI
 
 class AdminManageUsersScreen extends StatefulWidget {
   static const routeName = '/admin-manage-users';
@@ -127,6 +128,14 @@ class _AdminManageUsersScreenState extends State<AdminManageUsersScreen> {
                               onPressed: () =>
                                   _confirmDelete(user.id, user.email),
                             ),
+                            // === THÊM ONTAP ĐỂ XEM CHI TIẾT ===
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                AdminUserDetailStatsScreen.routeName,
+                                arguments: user, // Truyền cả object user
+                              );
+                            },
+                            // ===================================
                           ),
                         );
                       },

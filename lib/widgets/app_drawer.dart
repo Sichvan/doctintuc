@@ -51,14 +51,19 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
-            child: Text(
-              l10n.settingsAndMenu,
-              style: TextStyle(
-                color: Theme.of(context).appBarTheme.foregroundColor,
-                fontSize: 24,
+            child: Center( // 👈 Thêm dòng này để căn giữa nội dung
+              child: Text(
+                l10n.settingsAndMenu,
+                textAlign: TextAlign.center, // 👈 Giúp căn giữa cả trong trường hợp text dài
+                style: TextStyle(
+                  color: Theme.of(context).appBarTheme.foregroundColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold, // 👌 tùy chọn: cho tiêu đề nổi bật hơn
+                ),
               ),
             ),
           ),
+
           Consumer<ThemeProvider>(
             builder: (context, themeProvider, child) {
               return SwitchListTile(

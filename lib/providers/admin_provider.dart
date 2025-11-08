@@ -1,5 +1,4 @@
-// providers/admin_provider.dart
-import 'dart:convert';
+// SỬA: Xóa import 'dart:convert' không dùng
 import 'package:flutter/material.dart';
 import '../models/app_user.dart';
 import '../models/admin_article.dart';
@@ -16,10 +15,9 @@ class AdminProvider extends ChangeNotifier {
   bool get isLoadingUsers => _isLoadingUsers;
   String? get errorUsers => _errorUsers;
 
-  // === THÊM MỚI: State cho Thống kê User ===
+  // State cho Thống kê User
   Map<String, dynamic>? _userStats;
   Map<String, dynamic>? get userStats => _userStats;
-  // =====================================
 
   // State cho Quản lý Bài viết
   List<AdminArticle> _articles = [];
@@ -29,20 +27,34 @@ class AdminProvider extends ChangeNotifier {
   bool get isLoadingArticles => _isLoadingArticles;
   String? get errorArticles => _errorArticles;
 
-  // === HÀM MỚI: Lấy Thống kê User ===
+  // State cho Thống kê Thể loại
+  Map<String, dynamic>? _categoryStats;
+  Map<String, dynamic>? get categoryStats => _categoryStats;
+  bool _isLoadingCategoryStats = false;
+  bool get isLoadingCategoryStats => _isLoadingCategoryStats;
+
+  // --- STATE MỚI CHO THỐNG KÊ USER CỤ THỂ ---
+  Map<String, dynamic>? _userCategoryStats;
+  Map<String, dynamic>? get userCategoryStats => _userCategoryStats;
+  bool _isLoadingUserCategoryStats = false;
+  bool get isLoadingUserCategoryStats => _isLoadingUserCategoryStats;
+  String? _errorUserCategoryStats;
+  String? get errorUserCategoryStats => _errorUserCategoryStats;
+  // ------------------------------------------
+
+
+  // --- HÀM QUẢN LÝ USER ---
   Future<void> fetchUserStats(String token) async {
     try {
       _userStats = await _apiService.adminFetchUserStats(token);
     } catch (e) {
-      // Không làm crash app nếu chỉ thống kê lỗi
-      print('Lỗi khi tải thống kê: $e');
+      // SỬA: Dùng debugPrint
+      debugPrint('Lỗi khi tải thống kê User: $e');
       _userStats = null;
     }
     notifyListeners();
   }
-  // ==================================
 
-  // --- HÀM QUẢN LÝ USER ---
   Future<void> fetchUsers(String token) async {
     _isLoadingUsers = true;
     _errorUsers = null;
@@ -110,5 +122,41 @@ class AdminProvider extends ChangeNotifier {
     await _apiService.adminDeleteArticle(articleId, token);
     _articles.removeWhere((article) => article.id == articleId);
     notifyListeners();
+  }
+
+  // --- HÀM QUẢN LÝ THỐNG KÊ THỂ LOẠI ---
+  Future<void> fetchCategoryStats(String token) async {
+    _isLoadingCategoryStats = true;
+    notifyListeners();
+    try {
+      // Đây là hàm đã báo lỗi
+      _categoryStats = await _apiService.adminFetchCategoryStats(token);
+    } catch (e) {
+      // SỬA: Dùng debugPrint
+      debugPrint('Lỗi khi tải thống kê thể loại: $e');
+      _categoryStats = null;
+    } finally {
+      _isLoadingCategoryStats = false;
+      notifyListeners();
+    }
+  }
+
+  // --- HÀM MỚI: LẤY THỐNG KÊ CỦA 1 USER ---
+  Future<void> fetchUserCategoryStats(String userId, String token) async {
+    _isLoadingUserCategoryStats = true;
+    _errorUserCategoryStats = null;
+    _userCategoryStats = null; // Xóa dữ liệu cũ
+    notifyListeners();
+    try {
+      _userCategoryStats =
+      await _apiService.adminFetchUserCategoryStats(userId, token);
+    } catch (e) {
+      debugPrint('Lỗi khi tải thống kê của user $userId: $e');
+      _errorUserCategoryStats = e.toString();
+      _userCategoryStats = null;
+    } finally {
+      _isLoadingUserCategoryStats = false;
+      notifyListeners();
+    }
   }
 }

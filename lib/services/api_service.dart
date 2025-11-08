@@ -1,10 +1,12 @@
 import 'package:http/http.dart' as http;
 import '../models/news.dart'; // Giữ lại import này cho hàm fetchNews
-import 'dart:convert'; // Thêm import này
+import 'dart:convert'; // Import này cần thiết cho json.decode/encode
 
 class ApiService {
-//  static const String _baseUrl = 'http://10.0.2.2:5000/api';
-  static const String _baseUrl = 'http://10.200.151.26:5000/api';
+  //  static const String _baseUrl = 'http://10.0.2.2:5000/api';
+//  static const String _baseUrl = 'http://10.200.151.26:5000/api';
+  static const String _baseUrl = 'http://192.168.1.25:5000/api';
+
 
   // --- Hàm gốc cho User ---
   Future<List<News>> fetchNews(String category, String language) async {
@@ -13,16 +15,14 @@ class ApiService {
     if (response.statusCode == 200) {
       return newsFromJson(response.body);
     } else {
-      print('API Error: ${response.statusCode} - ${response.body}');
+      // print('API Error: ${response.statusCode} - ${response.body}');
       throw Exception('Failed to load news');
     }
   }
 
-  // --- THÊM HÀM MỚI (CÔNG KHAI) ---
   // Lấy bài viết của Admin (công khai) đã lọc
   Future<List<dynamic>> fetchPublicAdminArticles(
       String category, String language) async {
-    // Gửi category và language làm query params
     final url =
         '$_baseUrl/articles/public?category=$category&language=$language';
     final response = await http.get(
@@ -31,10 +31,8 @@ class ApiService {
         'Content-Type': 'application/json',
       },
     );
-    // Sử dụng _handleResponse đã có
     return _handleResponse(response) as List<dynamic>;
   }
-
 
   // --- HÀM CHO ADMIN (BẢO MẬT) ---
 
@@ -44,7 +42,6 @@ class ApiService {
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return responseData;
     } else {
-      // Ném lỗi với message từ server (bao gồm cả lỗi validation)
       throw (responseData['msg'] ??
           responseData['errors']?[0]['msg'] ??
           'Đã xảy ra lỗi');
@@ -61,7 +58,6 @@ class ApiService {
         'x-auth-token': token,
       },
     );
-    // Ép kiểu sang List<dynamic>
     return _handleResponse(response) as List<dynamic>;
   }
 
@@ -79,7 +75,6 @@ class ApiService {
 
   // --- Quản lý Bài viết ---
   Future<List<dynamic>> adminFetchArticles(String token) async {
-    // URL này lấy TẤT CẢ bài viết để admin quản lý
     final url = '$_baseUrl/articles';
     final response = await http.get(
       Uri.parse(url),
@@ -131,6 +126,7 @@ class ApiService {
     return _handleResponse(response);
   }
 
+  // --- User Data (Lưu, Lịch sử) ---
   Future<List<dynamic>> getSavedArticles(String token) async {
     final url = '$_baseUrl/user/saved';
     final response = await http.get(
@@ -143,7 +139,6 @@ class ApiService {
     return _handleResponse(response) as List<dynamic>;
   }
 
-  // Lấy danh sách lịch sử
   Future<List<dynamic>> getHistory(String token) async {
     final url = '$_baseUrl/user/history';
     final response = await http.get(
@@ -156,8 +151,8 @@ class ApiService {
     return _handleResponse(response) as List<dynamic>;
   }
 
-  // Lưu 1 bài viết
-  Future<dynamic> saveArticle(String token, Map<String, dynamic> articleData) async {
+  Future<dynamic> saveArticle(
+      String token, Map<String, dynamic> articleData) async {
     final url = '$_baseUrl/user/save';
     final response = await http.post(
       Uri.parse(url),
@@ -170,7 +165,6 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Bỏ lưu 1 bài viết
   Future<dynamic> unsaveArticle(String token, String articleId) async {
     final url = '$_baseUrl/user/unsave';
     final response = await http.post(
@@ -184,8 +178,8 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Thêm vào lịch sử
-  Future<dynamic> addHistory(String token, Map<String, dynamic> articleData) async {
+  Future<dynamic> addHistory(
+      String token, Map<String, dynamic> articleData) async {
     final url = '$_baseUrl/user/history';
     final response = await http.post(
       Uri.parse(url),
@@ -198,9 +192,9 @@ class ApiService {
     return _handleResponse(response);
   }
 
-  // Thêm hàm này vào bên trong class ApiService
+  // --- Admin Thống kê ---
   Future<Map<String, dynamic>> adminFetchUserStats(String token) async {
-    final url = '$_baseUrl/admin/user-stats'; // URL của API mới
+    final url = '$_baseUrl/admin/user-stats';
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -208,9 +202,33 @@ class ApiService {
         'x-auth-token': token,
       },
     );
-    // _handleResponse sẽ tự động parse JSON và ném lỗi nếu có
     return _handleResponse(response) as Map<String, dynamic>;
   }
 
-}
+  // === HÀM BỊ THIẾU MÀ BẠN CẦN THÊM ===
+  Future<Map<String, dynamic>> adminFetchCategoryStats(String token) async {
+    final url = '$_baseUrl/admin/category-stats'; // URL của API mới
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+    );
+    return _handleResponse(response) as Map<String, dynamic>;
+  }
 
+  // === HÀM MỚI CHO THỐNG KÊ 1 USER ===
+  Future<Map<String, dynamic>> adminFetchUserCategoryStats(
+      String userId, String token) async {
+    final url = '$_baseUrl/admin/user-category-stats/$userId'; // URL của API mới
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+    );
+    return _handleResponse(response) as Map<String, dynamic>;
+  }
+}

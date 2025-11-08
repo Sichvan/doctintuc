@@ -13,14 +13,18 @@ import 'screens/splash_screen.dart';
 import 'screens/article_detail_admin_content_screen.dart';
 import 'screens/saved_articles_screen.dart';
 import 'screens/history_screen.dart';
-import 'screens/admin/admin_dashboard_screen.dart';  // Import thêm
-import 'screens/admin/admin_manage_users_screen.dart';  // Import thêm
-import 'screens/admin/admin_manage_articles_screen.dart';  // Import thêm
-import 'screens/admin/admin_edit_article_screen.dart';  // Import thêm
+import 'screens/admin/admin_dashboard_screen.dart';
+import 'screens/admin/admin_manage_users_screen.dart';
+import 'screens/admin/admin_manage_articles_screen.dart';
+import 'screens/admin/admin_edit_article_screen.dart';
+// THÊM IMPORT CHO MÀN HÌNH MỚI
+import 'screens/admin/admin_manage_app_screen.dart';
+// THÊM IMPORT CHO MÀN HÌNH MỚI
+import 'screens/admin/admin_user_detail_stats_screen.dart';
 // L10n
 import 'l10n/app_localizations.dart';
 // Theme
-import 'theme/dark_light.dart';  // Giả sử file này tồn tại
+import 'theme/dark_light.dart'; // Giả sử file này tồn tại
 
 void main() {
   runApp(const MyApp());
@@ -70,24 +74,25 @@ class MyApp extends StatelessWidget {
               Locale('en', ''),
               Locale('vi', ''),
             ],
-            // SỬA LỖI RETURN TYPE: Đảm bảo home return Widget đúng
             home: Consumer<AuthProvider>(
               builder: (ctx, auth, _) {
                 if (!auth.isAuth) {
                   return FutureBuilder(
                     future: auth.tryAutoLogin(),
                     builder: (ctx, authResultSnapshot) {
-                      if (authResultSnapshot.connectionState == ConnectionState.waiting) {
+                      if (authResultSnapshot.connectionState ==
+                          ConnectionState.waiting) {
                         return const SplashScreen();
                       }
                       if (auth.isAuth) {
                         ctx.read<UserDataProvider>().fetchInitialSavedArticles();
                       }
-                      return auth.isAuth ? const HomeScreen() : const AuthScreen();
+                      return auth.isAuth
+                          ? const HomeScreen()
+                          : const AuthScreen();
                     },
                   );
                 }
-                // Nếu auth.isAuth, return HomeScreen (không phải AdminDashboard trực tiếp)
                 return const HomeScreen();
               },
             ),
@@ -95,14 +100,26 @@ class MyApp extends StatelessWidget {
             routes: {
               AuthScreen.routeName: (ctx) => const AuthScreen(),
               HomeScreen.routeName: (ctx) => const HomeScreen(),
-              ArticleDetailAdminContentScreen.routeName: (ctx) => const ArticleDetailAdminContentScreen(),
-              SavedArticlesScreen.routeName: (ctx) => const SavedArticlesScreen(),
+              ArticleDetailAdminContentScreen.routeName: (ctx) =>
+              const ArticleDetailAdminContentScreen(),
+              SavedArticlesScreen.routeName: (ctx) =>
+              const SavedArticlesScreen(),
               HistoryScreen.routeName: (ctx) => const HistoryScreen(),
               // Admin routes
-              AdminDashboardScreen.routeName: (ctx) => const AdminDashboardScreen(),  // const để fix return type
-              AdminManageUsersScreen.routeName: (ctx) => const AdminManageUsersScreen(),
-              AdminManageArticlesScreen.routeName: (ctx) => const AdminManageArticlesScreen(),
-              AdminEditArticleScreen.routeName: (ctx) => const AdminEditArticleScreen(),
+              AdminDashboardScreen.routeName: (ctx) =>
+              const AdminDashboardScreen(),
+              AdminManageUsersScreen.routeName: (ctx) =>
+              const AdminManageUsersScreen(),
+              AdminManageArticlesScreen.routeName: (ctx) =>
+              const AdminManageArticlesScreen(),
+              AdminEditArticleScreen.routeName: (ctx) =>
+              const AdminEditArticleScreen(),
+              // THÊM ROUTE CHO MÀN HÌNH MỚI
+              AdminManageAppScreen.routeName: (ctx) =>
+              const AdminManageAppScreen(),
+              // THÊM ROUTE CHO MÀN HÌNH MỚI
+              AdminUserDetailStatsScreen.routeName: (ctx) =>
+              const AdminUserDetailStatsScreen(),
             },
           );
         },

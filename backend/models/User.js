@@ -1,4 +1,7 @@
+// backend/models/User.js
 const mongoose = require('mongoose');
+
+// SỬA: Thêm "category"
 const articleEntrySchema = new mongoose.Schema({
   articleId: { type: String, required: true },
   isFromAdmin: { type: Boolean, required: true },
@@ -8,6 +11,7 @@ const articleEntrySchema = new mongoose.Schema({
   pubDate: { type: Date },
   articleUrl: { type: String },
   adminContent: { type: String },
+  category: { type: String, default: 'other' }, // <-- THÊM DÒNG NÀY
 }, { _id: false });
 
 const userSchema = new mongoose.Schema({
