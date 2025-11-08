@@ -198,5 +198,19 @@ class ApiService {
     return _handleResponse(response);
   }
 
+  // Thêm hàm này vào bên trong class ApiService
+  Future<Map<String, dynamic>> adminFetchUserStats(String token) async {
+    final url = '$_baseUrl/admin/user-stats'; // URL của API mới
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+    );
+    // _handleResponse sẽ tự động parse JSON và ném lỗi nếu có
+    return _handleResponse(response) as Map<String, dynamic>;
+  }
+
 }
 
