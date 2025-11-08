@@ -54,5 +54,6 @@
     "manageUsers": "Manage Users",
     "manageComments": "Manage Comments",
     "manageApp": "Manage App",
-    "noAdminAccess": "You do not have admin access."
+    "noAdminAccess": "You do not have admin access",
+    "shareArticle": "Share Article"
 }

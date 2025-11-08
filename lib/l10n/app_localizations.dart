@@ -377,8 +377,14 @@ abstract class AppLocalizations {
   /// No description provided for @noAdminAccess.
   ///
   /// In vi, this message translates to:
-  /// **'Bạn không có quyền truy cập admin.'**
+  /// **'Bạn không có quyền truy cập admin'**
   String get noAdminAccess;
+
+  /// No description provided for @shareArticle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ bài viết'**
+  String get shareArticle;
 }
 
 class _AppLocalizationsDelegate

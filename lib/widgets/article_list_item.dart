@@ -1,6 +1,6 @@
-// lib/widgets/article_list_item.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../models/display_article.dart';
 import '../providers/auth_provider.dart';
 import '../providers/user_data_provider.dart';
@@ -13,10 +13,11 @@ class ArticleListItem extends StatelessWidget {
   final DisplayArticle article;
 
   const ArticleListItem({
-    Key? key,
+    super.key,
     required this.article,
-  }) : super(key: key);
+  });
 
+  // Hàm private hiển thị dialog yêu cầu đăng nhập
   void _showLoginRequiredDialog(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     showDialog(
@@ -43,12 +44,10 @@ class ArticleListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Lấy provider
     final auth = context.watch<AuthProvider>();
     final userData = context.watch<UserDataProvider>();
     final l10n = AppLocalizations.of(context)!;
 
-    // Kiểm tra trạng thái đã lưu
     final bool isSaved = userData.isSaved(article.id);
 
     return Card(
@@ -60,13 +59,10 @@ class ArticleListItem extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              // --- THÊM VÀO LỊCH SỬ KHI BẤM VÀO ---
               if (auth.isAuth) {
                 context.read<UserDataProvider>().addToHistory(article);
               }
-              // --- (kết thúc) ---
 
-              // Điều hướng đến màn hình chi tiết
               if (article.isFromAdmin) {
                 Navigator.pushNamed(
                   context,
@@ -89,7 +85,6 @@ class ArticleListItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Hình ảnh
                 if (article.imageUrl != null && article.imageUrl!.isNotEmpty)
                   Image.network(
                     article.imageUrl!,
@@ -111,7 +106,6 @@ class ArticleListItem extends StatelessWidget {
                       );
                     },
                   ),
-                // Tiêu đề và Nguồn
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -140,13 +134,12 @@ class ArticleListItem extends StatelessWidget {
               ],
             ),
           ),
-          // Dải nút (Lưu, Bình luận)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // --- NÚT LƯU BÀI VIẾT (ĐÃ CẬP NHẬT) ---
+                // --- NÚT LƯU BÀI VIẾT ---
                 IconButton(
                   icon: Icon(
                     isSaved ? Icons.bookmark : Icons.bookmark_border,
@@ -154,26 +147,50 @@ class ArticleListItem extends StatelessWidget {
                   ),
                   tooltip: l10n.savedArticles,
                   onPressed: () {
+                    // Yêu cầu đăng nhập để LƯU
                     if (!auth.isAuth) {
                       _showLoginRequiredDialog(context);
                       return;
                     }
-                    // Gọi hàm toggle
                     context.read<UserDataProvider>().toggleSaveArticle(article);
                   },
                 ),
-                // --- NÚT BÌNH LUẬN (GIỮ NGUYÊN) ---
+                // --- NÚT CHIA SẺ ---
                 IconButton(
-                  icon: const Icon(Icons.comment_outlined),
-                  tooltip: 'Bình luận', // TODO: Thêm vào l10n
+                  icon: const Icon(Icons.share),
+                  tooltip: l10n.shareArticle,
                   onPressed: () {
+
+                    // === THÊM LOGIC YÊU CẦU ĐĂNG NHẬP ĐỂ CHIA SẺ ===
                     if (!auth.isAuth) {
                       _showLoginRequiredDialog(context);
                       return;
                     }
-                    // TODO: Logic bình luận (sử dụng article.id)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('TODO: Xử lý bình luận')),
+                    // ===============================================
+
+                    String textToShare;
+                    if (article.isFromAdmin) {
+                      String contentSnippet = article.adminContent ?? '';
+                      if (contentSnippet.length > 150) {
+                        contentSnippet =
+                        '${contentSnippet.substring(0, 150)}...';
+                      }
+                      textToShare =
+                      '${article.title}\n\n$contentSnippet\n\n(${l10n.appName})';
+                    } else {
+                      textToShare = '${article.title}\n\n${article.articleUrl}';
+                    }
+
+                    final box = context.findRenderObject() as RenderBox?;
+
+                    SharePlus.instance.share(
+                      ShareParams(
+                        text: textToShare,
+                        subject: article.title,
+                        sharePositionOrigin: box != null
+                            ? box.localToGlobal(Offset.zero) & box.size
+                            : null,
+                      ),
                     );
                   },
                 ),

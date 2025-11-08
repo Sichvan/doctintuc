@@ -3,7 +3,8 @@ import '../models/news.dart'; // Giữ lại import này cho hàm fetchNews
 import 'dart:convert'; // Thêm import này
 
 class ApiService {
-  static const String _baseUrl = 'http://10.0.2.2:5000/api';
+//  static const String _baseUrl = 'http://10.0.2.2:5000/api';
+  static const String _baseUrl = 'http://10.200.151.26:5000/api';
 
   // --- Hàm gốc cho User ---
   Future<List<News>> fetchNews(String category, String language) async {

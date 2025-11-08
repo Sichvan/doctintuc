@@ -54,5 +54,6 @@
     "manageUsers": "Quản lý Tài khoản",
     "manageComments": "Quản lý Bình luận",
     "manageApp": "Quản lý Ứng dụng",
-    "noAdminAccess": "Bạn không có quyền truy cập admin."
+    "noAdminAccess": "Bạn không có quyền truy cập admin",
+    "shareArticle": "Chia sẻ bài viết"
 }

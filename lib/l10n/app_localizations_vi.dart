@@ -150,5 +150,8 @@ class AppLocalizationsVi extends AppLocalizations {
   String get manageApp => 'Quản lý Ứng dụng';
 
   @override
-  String get noAdminAccess => 'Bạn không có quyền truy cập admin.';
+  String get noAdminAccess => 'Bạn không có quyền truy cập admin';
+
+  @override
+  String get shareArticle => 'Chia sẻ bài viết';
 }

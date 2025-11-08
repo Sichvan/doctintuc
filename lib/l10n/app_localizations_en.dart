@@ -150,5 +150,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get manageApp => 'Manage App';
 
   @override
-  String get noAdminAccess => 'You do not have admin access.';
+  String get noAdminAccess => 'You do not have admin access';
+
+  @override
+  String get shareArticle => 'Share Article';
 }
