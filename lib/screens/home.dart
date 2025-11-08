@@ -1,11 +1,11 @@
-// lib/screens/home_screen.dart
+// lib/screens/home.dart
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../providers/news_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/app_drawer.dart';
-import '../screens/auth_screen.dart';
+import '../screens/login_register.dart';
 import '../models/display_article.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/article_list_item.dart';

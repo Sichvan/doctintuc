@@ -1,4 +1,4 @@
-// lib/screens/article_detail_screen.dart
+// lib/screens/article_detail.dart
 import 'package:flutter/material.dart';
 import 'package:readability/article.dart' as readability;
 import 'package:readability/readability.dart' as readability;

@@ -4,7 +4,7 @@ import '../../models/admin_article.dart';
 import '../../providers/admin_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../utils/categories.dart';
-import 'admin_edit_article_screen.dart';
+import 'admin_edit.dart';
 
 class AdminManageArticlesScreen extends StatefulWidget {
   static const routeName = '/admin-manage-articles';

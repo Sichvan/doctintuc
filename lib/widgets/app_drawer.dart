@@ -5,11 +5,11 @@ import '../providers/theme_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/auth_provider.dart';
 // Screens
-import '../screens/auth_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/saved_articles_screen.dart';
-import '../screens/history_screen.dart';
-import '../screens/admin/admin_dashboard_screen.dart';  // Import thêm
+import '../screens/login_register.dart';
+import '../screens/home.dart';
+import '../screens/saved.dart';
+import '../screens/history.dart';
+import '../screens/admin/admin.dart';  // Import thêm
 import '../l10n/app_localizations.dart';  // Import l10n
 
 class AppDrawer extends StatelessWidget {

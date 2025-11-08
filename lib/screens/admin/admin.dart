@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/theme_provider.dart';
 import '../../l10n/app_localizations_vi.dart';
-import '../home_screen.dart';
-import 'admin_manage_app_screen.dart';
-import 'admin_manage_users_screen.dart';
-import 'admin_manage_articles_screen.dart';
+import '../home.dart';
+import 'admin_manage_app.dart';
+import 'admin_manage_users.dart';
+import 'admin_manage_articles.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   static const routeName = '/admin-dashboard';

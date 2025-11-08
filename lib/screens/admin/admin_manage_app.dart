@@ -1,4 +1,4 @@
-// lib/screens/admin/admin_manage_app_screen.dart
+// lib/screens/admin/admin_manage_app.dart
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';

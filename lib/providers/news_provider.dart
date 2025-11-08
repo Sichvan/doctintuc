@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/news.dart';
 import '../models/display_article.dart';
 import '../models/admin_article.dart';
-import '../services/api_service.dart';
+import '../services/api.dart';
 
 class NewsProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();

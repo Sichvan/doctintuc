@@ -7,20 +7,20 @@ import 'providers/admin_provider.dart';
 import 'providers/language_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/user_data_provider.dart';
-import 'screens/home_screen.dart';
-import 'screens/auth_screen.dart';
-import 'screens/splash_screen.dart';
-import 'screens/article_detail_admin_content_screen.dart';
-import 'screens/saved_articles_screen.dart';
-import 'screens/history_screen.dart';
-import 'screens/admin/admin_dashboard_screen.dart';
-import 'screens/admin/admin_manage_users_screen.dart';
-import 'screens/admin/admin_manage_articles_screen.dart';
-import 'screens/admin/admin_edit_article_screen.dart';
+import 'screens/home.dart';
+import 'screens/login_register.dart';
+import 'screens/splash.dart';
+import 'screens/article_detail_admin.dart';
+import 'screens/saved.dart';
+import 'screens/history.dart';
+import 'screens/admin/admin.dart';
+import 'screens/admin/admin_manage_users.dart';
+import 'screens/admin/admin_manage_articles.dart';
+import 'screens/admin/admin_edit.dart';
 // THÊM IMPORT CHO MÀN HÌNH MỚI
-import 'screens/admin/admin_manage_app_screen.dart';
+import 'screens/admin/admin_manage_app.dart';
 // THÊM IMPORT CHO MÀN HÌNH MỚI
-import 'screens/admin/admin_user_detail_stats_screen.dart';
+import 'screens/admin/admin_user_detail.dart';
 // L10n
 import 'l10n/app_localizations.dart';
 // Theme

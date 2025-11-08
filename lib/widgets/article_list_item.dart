@@ -4,9 +4,9 @@ import 'package:share_plus/share_plus.dart';
 import '../models/display_article.dart';
 import '../providers/auth_provider.dart';
 import '../providers/user_data_provider.dart';
-import '../screens/article_detail_admin_content_screen.dart';
-import '../screens/article_detail_screen.dart';
-import '../screens/auth_screen.dart';
+import '../screens/article_detail_admin.dart';
+import '../screens/article_detail.dart';
+import '../screens/login_register.dart';
 import '../l10n/app_localizations.dart';
 
 class ArticleListItem extends StatelessWidget {

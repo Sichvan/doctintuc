@@ -1,9 +1,9 @@
-// screens/admin/admin_manage_users_screen.dart
+// screens/admin/admin_manage_users.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/admin_provider.dart';
 import '../../providers/auth_provider.dart';
-import 'admin_user_detail_stats_screen.dart'; // <-- THÊM IMPORT MỚI
+import 'admin_user_detail.dart'; // <-- THÊM IMPORT MỚI
 
 class AdminManageUsersScreen extends StatefulWidget {
   static const routeName = '/admin-manage-users';
