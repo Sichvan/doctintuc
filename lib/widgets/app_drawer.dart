@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// Providers
 import '../providers/theme_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/auth_provider.dart';
-// Screens
 import '../screens/login_register.dart';
 import '../screens/home.dart';
 import '../screens/saved.dart';
 import '../screens/history.dart';
-import '../screens/admin/admin.dart';  // Import thêm
-import '../l10n/app_localizations.dart';  // Import l10n
+import '../screens/admin/admin.dart';
+import '../l10n/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -51,14 +49,14 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
             ),
-            child: Center( // 👈 Thêm dòng này để căn giữa nội dung
+            child: Center(
               child: Text(
                 l10n.settingsAndMenu,
-                textAlign: TextAlign.center, // 👈 Giúp căn giữa cả trong trường hợp text dài
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Theme.of(context).appBarTheme.foregroundColor,
                   fontSize: 24,
-                  fontWeight: FontWeight.bold, // 👌 tùy chọn: cho tiêu đề nổi bật hơn
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

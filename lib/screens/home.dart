@@ -1,4 +1,3 @@
-// lib/screens/home.dart
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../providers/news_provider.dart';
@@ -61,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _fetchInitialNews() {
     if (_categories.isNotEmpty) {
+      Provider.of<NewsProvider>(context, listen: false).updateSearchQuery('');
       final initialCategory = _categories.values.first;
       final langCode =
           context.read<LanguageProvider>().currentLocale.languageCode;
@@ -71,12 +71,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   void _handleTabSelection() {
     if (!_tabController.indexIsChanging) {
+      final newsProvider = Provider.of<NewsProvider>(context, listen: false);
+
+      // Reset trường tìm kiếm khi đổi tab
       _searchController.clear();
+      newsProvider.updateSearchQuery('');
+
       final categoryKey = _categories.values.elementAt(_tabController.index);
       final langCode =
           context.read<LanguageProvider>().currentLocale.languageCode;
-      Provider.of<NewsProvider>(context, listen: false)
-          .fetchNewsByCategory(categoryKey, langCode);
+
+      // Reset search khi đổi tab
+      newsProvider.fetchNewsByCategory(categoryKey, langCode, resetSearch: true);
     }
   }
 
@@ -151,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 fillColor: Theme.of(context).dividerColor.withAlpha(50),
               ),
               onChanged: (value) {
+                // Gọi hàm updateSearchQuery để lọc danh sách trong provider
                 newsProvider.updateSearchQuery(value);
               },
             ),
@@ -167,9 +174,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
-              unselectedLabelStyle: const TextStyle(
-                fontSize: 16,
-              ),
+              unselectedLabelStyle: const TextStyle(fontSize: 16),
               indicatorSize: TabBarIndicatorSize.tab,
               tabs: _categories.keys.map((String key) {
                 return Tab(text: key);
@@ -188,8 +193,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                 if (newsProvider.errorMessage != null && newsList.isEmpty) {
                   return Center(
-                      child: Text(
-                          l10n.errorFetchingData(newsProvider.errorMessage!)));
+                    child: Text(
+                      l10n.errorFetchingData(newsProvider.errorMessage!),
+                    ),
+                  );
                 }
 
                 if (newsList.isEmpty) {

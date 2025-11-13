@@ -9,7 +9,8 @@ class AuthProvider extends ChangeNotifier {
   String? _userId;
   String? _email;
 
-  final String _baseUrl = 'http://192.168.1.25:5000/api/auth';
+  // final String _baseUrl ='http://10.0.2.2:5000/api';
+  final String _baseUrl ='http://10.200.151.26:5000/api';
 
   bool get isAuth => _token != null;
   String? get token => _token;
@@ -56,11 +57,11 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'login');
+    return _authenticate(email, password, 'auth/login');
   }
 
   Future<void> register(String email, String password) async {
-    return _authenticate(email, password, 'register');
+    return _authenticate(email, password, 'auth/register');
   }
 
   Future<bool> tryAutoLogin() async {
